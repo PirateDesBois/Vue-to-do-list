@@ -192,7 +192,7 @@
           </v-col>
         </v-col>
       </v-row>
-
+      <v-btn color="primary" block @click="clearHistory()">Clear</v-btn>
     </v-container>
   </v-app>
 </template>
@@ -209,6 +209,10 @@ export default {
     };
   },
   methods: {
+    clearHistory() {
+      // Réinitialiser le LocalStorage
+    localStorage.clear();
+    },
     // Initialisation of data
     getData() {
       const data = localStorage.getItem('todoList');
