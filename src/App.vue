@@ -22,8 +22,8 @@
       <v-divider class="my-4"></v-divider>
 
       <v-list>
-        <v-list-item v-for="(task, index) in tasks" :key="index">
-          <v-list-item-title>{{ task }}</v-list-item-title>
+        <v-list-item v-for="(task, index) in taskList" :key="index">
+          <v-list-item-title>{{ task.title }}</v-list-item-title>
           <v-list-item-action>
             <v-icon color="red" @click="deleteTask(index)">mdi-delete</v-icon>
           </v-list-item-action>
@@ -37,18 +37,34 @@
 export default {
   data() {
     return {
+      taskList: this.getData(),
       newTask: '',
       tasks: []
-    }
+    };
   },
   methods: {
+    saveData(data) {
+      localStorage.setItem('todoList', JSON.stringify(data));
+    },
+    getData() {
+      const data = localStorage.getItem('todoList');
+      return JSON.parse(data) || [];
+    },
     addTask() {
-      this.tasks.push(this.newTask)
-      this.newTask = ''
+      if (this.newTask) {
+        this.taskList.push({ title: this.newTask, done: false });
+        this.newTask = '';
+        this.saveData(this.taskList);
+      }
     },
     deleteTask(index) {
-      this.tasks.splice(index, 1)
+      this.taskList.splice(index, 1);
+      this.saveData(this.taskList);
+    },
+    toggleTask(index) {
+      this.taskList[index].done = !this.taskList[index].done;
+      this.saveData(this.taskList);
     }
   }
-}
+};
 </script>
