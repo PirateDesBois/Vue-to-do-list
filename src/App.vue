@@ -43,20 +43,27 @@ export default {
     };
   },
   methods: {
-    saveData(data) {
-      localStorage.setItem('todoList', JSON.stringify(data));
-    },
+    // Initialisation of data
     getData() {
       const data = localStorage.getItem('todoList');
       return JSON.parse(data) || [];
     },
+    // Saving data list on LocalStorage
+    saveData(data) {
+      localStorage.setItem('todoList', JSON.stringify(data));
+    },
+    // Adding tasks to the list
+    // If task is empty, return alert with message "Please write a task"
     addTask() {
-      if (this.newTask) {
+      if (this.newTask != "") {
         this.taskList.push({ title: this.newTask, done: false });
         this.newTask = '';
         this.saveData(this.taskList);
+      }else {
+        alert('Please write a task')
       }
     },
+    // Deleting tasks from the list and from de LocalStorage
     deleteTask(index) {
       this.taskList.splice(index, 1);
       this.saveData(this.taskList);
