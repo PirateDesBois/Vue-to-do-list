@@ -6,7 +6,7 @@
       </v-toolbar-title>
     </v-app-bar>
 
-    <v-container>
+    <v-container class="my-15">
       <v-card>
         <v-card-title>
           Add Task
@@ -14,6 +14,7 @@
         <v-card-text>
           <v-form>
             <v-text-field v-model="newTask" label="Task Name"></v-text-field>
+            <v-text-field v-model="newTaskDescription" label="Task Description"></v-text-field>
             <v-btn color="primary" @click="addTask">Add</v-btn>
           </v-form>
         </v-card-text>
@@ -25,9 +26,16 @@
         <v-col v-for="(task, index) in taskList" :key="index" cols="12" sm="6" md="4">
           <v-card class="ma-2 rounded-shaped" :style="{ backgroundColor: task.color }">
             <v-card-title>
+              <!-- Task title -->
               <v-list-item v-if="!task.editable">{{ task.title }}</v-list-item>
               <v-text-field v-model="task.title" v-else label="Task Name"></v-text-field>
+              <!-- Task description -->
+                <v-list-item class="text-subtitle-1" v-if="!task.editable">{{ task.description }}</v-list-item>
+                <v-text-field v-model="task.description" v-else label="Task Description"></v-text-field>
             </v-card-title>
+    
+
+
             <v-card-actions class="justify-end text-right">
               <v-icon color="red" @click="deleteTask(index)">mdi-delete</v-icon>
               <v-icon color="primary" v-if="!task.editable" @click="editTask(index)">mdi-pencil</v-icon>
@@ -54,7 +62,6 @@
           </v-card>
 
         </v-col>
-
       </v-row>
 
     </v-container>
@@ -67,6 +74,7 @@ export default {
     return {
       taskList: this.getData(),
       newTask: '',
+      newTaskDescription: '',
       tasks: [],
       dialog: false,
     };
@@ -85,8 +93,9 @@ export default {
     // If task is empty, return alert with message "Please write a task"
     addTask() {
       if (this.newTask != "") {
-        this.taskList.push({ title: this.newTask, done: false, color: "#ffffff", colorPickerDialog: false });
+        this.taskList.push({ title: this.newTask,description: this.newTaskDescription, done: false, color: "#ffffff", colorPickerDialog: false });
         this.newTask = '';
+        this.newTaskDescription = '';
         this.saveData(this.taskList);
       } else {
         alert('Please write a task')
