@@ -23,9 +23,12 @@
 
       <v-list>
         <v-list-item v-for="(task, index) in taskList" :key="index">
-          <v-list-item-title>{{ task.title }}</v-list-item-title>
+          <v-list-item-title v-if="!task.editable">{{ task.title }}</v-list-item-title>
+          <v-text-field v-model="task.title" v-else label="Task Name"></v-text-field>
           <v-list-item-action>
             <v-icon color="red" @click="deleteTask(index)">mdi-delete</v-icon>
+            <v-icon color="primary" v-if="!task.editable" @click="editTask(index)">mdi-pencil</v-icon>
+            <v-icon color="primary" v-else @click="updateTask(index)">mdi-check</v-icon>
           </v-list-item-action>
         </v-list-item>
       </v-list>
@@ -66,6 +69,15 @@ export default {
     // Deleting tasks from the list and from de LocalStorage
     deleteTask(index) {
       this.taskList.splice(index, 1);
+      this.saveData(this.taskList);
+    },
+    // Editing task 
+    editTask(index) {
+      this.taskList[index].editable = true;
+    },
+    // Uptdating task
+    updateTask(index) {
+      this.taskList[index].editable = false;
       this.saveData(this.taskList);
     },
     toggleTask(index) {
