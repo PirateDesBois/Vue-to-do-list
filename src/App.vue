@@ -7,32 +7,40 @@
     </v-app-bar>
 
     <v-container>
-      <v-card>
-        <v-card-title>
-          Add Task
-        </v-card-title>
-        <v-card-text>
-          <v-form>
-            <v-text-field v-model="newTask" label="Task Name"></v-text-field>
-            <v-btn color="primary" @click="addTask">Add</v-btn>
-          </v-form>
-        </v-card-text>
-      </v-card>
+  <v-card>
+    <v-card-title>
+      Add Task
+    </v-card-title>
+    <v-card-text>
+      <v-form>
+        <v-text-field v-model="newTask" label="Task Name"></v-text-field>
+        <v-btn color="primary" @click="addTask">Add</v-btn>
+      </v-form>
+    </v-card-text>
+  </v-card>
 
-      <v-divider class="my-4"></v-divider>
+  <v-divider class="my-4"></v-divider>
 
-      <v-list>
-        <v-list-item v-for="(task, index) in taskList" :key="index">
-          <v-list-item-title v-if="!task.editable">{{ task.title }}</v-list-item-title>
-          <v-text-field v-model="task.title" v-else label="Task Name"></v-text-field>
-          <v-list-item-action>
-            <v-icon color="red" @click="deleteTask(index)">mdi-delete</v-icon>
-            <v-icon color="primary" v-if="!task.editable" @click="editTask(index)">mdi-pencil</v-icon>
-            <v-icon color="primary" v-else @click="updateTask(index)">mdi-check</v-icon>
-          </v-list-item-action>
-        </v-list-item>
-      </v-list>
-    </v-container>
+  <v-row>
+    <v-col v-for="(task, index) in taskList" :key="index" cols="12" sm="6" md="4">
+      <v-card class="ma-2 rounded-shaped" :style="{backgroundColor: task.color}">
+  <v-card-title>
+    <v-list-item v-if="!task.editable">{{ task.title }}</v-list-item>
+    <v-text-field v-model="task.title" v-else label="Task Name"></v-text-field>
+  </v-card-title>
+  <v-card-actions class="justify-space-between text-right">
+    <v-icon color="red" @click="deleteTask(index)">mdi-delete</v-icon>
+    <v-icon color="primary" v-if="!task.editable" @click="editTask(index)">mdi-pencil</v-icon>
+    <v-icon color="primary" v-else @click="updateTask(index)">mdi-check</v-icon>
+    <v-color-picker v-model="task.color"></v-color-picker>
+  </v-card-actions>
+</v-card>
+
+</v-col>
+
+  </v-row>
+
+</v-container>
   </v-app>
 </template>
 
@@ -58,14 +66,14 @@ export default {
     // Adding tasks to the list
     // If task is empty, return alert with message "Please write a task"
     addTask() {
-      if (this.newTask != "") {
-        this.taskList.push({ title: this.newTask, done: false });
-        this.newTask = '';
-        this.saveData(this.taskList);
-      }else {
-        alert('Please write a task')
-      }
-    },
+  if (this.newTask != "") {
+    this.taskList.push({ title: this.newTask, done: false, color: "#ffffff" });
+    this.newTask = '';
+    this.saveData(this.taskList);
+  } else {
+    alert('Please write a task')
+  }
+},
     // Deleting tasks from the list and from de LocalStorage
     deleteTask(index) {
       this.taskList.splice(index, 1);
@@ -77,9 +85,9 @@ export default {
     },
     // Uptdating task
     updateTask(index) {
-      this.taskList[index].editable = false;
-      this.saveData(this.taskList);
-    },
+  this.taskList[index].editable = false;
+  this.saveData(this.taskList);
+},
     toggleTask(index) {
       this.taskList[index].done = !this.taskList[index].done;
       this.saveData(this.taskList);
