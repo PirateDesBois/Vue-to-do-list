@@ -32,7 +32,31 @@
     <v-icon color="red" @click="deleteTask(index)">mdi-delete</v-icon>
     <v-icon color="primary" v-if="!task.editable" @click="editTask(index)">mdi-pencil</v-icon>
     <v-icon color="primary" v-else @click="updateTask(index)">mdi-check</v-icon>
-    <v-color-picker v-model="task.color"></v-color-picker>
+    <!-- <v-color-picker v-model="task.color"></v-color-picker> -->
+    <v-dialog
+  v-model="task.colorPickerDialog"
+  width="auto"
+>
+      <template v-slot:activator="{ props }">
+        <v-btn
+          color="primary"
+          v-bind="props"
+          @click="task.colorPickerDialog = true"
+        >
+          Change color
+        </v-btn>
+      </template>
+
+      <v-card>
+        <v-card-text>
+          <v-color-picker v-model="task.color"></v-color-picker>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" block @click="dialog = false">Close color changer</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    
   </v-card-actions>
 </v-card>
 
@@ -50,7 +74,8 @@ export default {
     return {
       taskList: this.getData(),
       newTask: '',
-      tasks: []
+      tasks: [],
+      dialog: false,
     };
   },
   methods: {
@@ -67,7 +92,7 @@ export default {
     // If task is empty, return alert with message "Please write a task"
     addTask() {
   if (this.newTask != "") {
-    this.taskList.push({ title: this.newTask, done: false, color: "#ffffff" });
+    this.taskList.push({ title: this.newTask, done: false, color: "#ffffff",colorPickerDialog: false  });
     this.newTask = '';
     this.saveData(this.taskList);
   } else {
