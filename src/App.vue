@@ -5,25 +5,31 @@
   background-size:cover;
 }
 
-.glass-whaitlist{
+.glass{
 /* From https://css.glass */
-background: rgba(183, 102, 185, 0.363);
+background: rgba(221, 205, 206, 0.123);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5.2px);
+-webkit-backdrop-filter: blur(5.2px);
+}
+.waitlist{
+/* From https://css.glass */
+background: rgba(233, 73, 61, 0.589);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5.2px);
+-webkit-backdrop-filter: blur(5.2px);
+}
+.progress{
+/* From https://css.glass */
+background: rgba(233, 193, 61, 0.651);
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(5.2px);
 -webkit-backdrop-filter: blur(5.2px);
 }
 
-.glass-progress{
+.done{
 /* From https://css.glass */
-background: rgba(235, 114, 16, 0.342);
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(5.2px);
--webkit-backdrop-filter: blur(5.2px);
-}
-
-.glass-done{
-/* From https://css.glass */
-background: rgba(14, 233, 33, 0.356);
+background: rgba(35, 194, 83, 0.616);
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(5.2px);
 -webkit-backdrop-filter: blur(5.2px);
@@ -41,9 +47,9 @@ backdrop-filter: blur(5.2px);
     </v-app-bar>
 
     <v-container class="my-15">
-      <v-card class="glass">
+      <v-card>
         <v-card-title>
-          Add Task
+          New Task
         </v-card-title>
         <v-card-text>
           <v-form>
@@ -55,12 +61,27 @@ backdrop-filter: blur(5.2px);
       </v-card>
 
       <v-divider class="my-4"></v-divider>
-
       <v-row>
+        <v-col cols="4" class="waitlist">
+          <div class="font-weight-bold text-subtitle-1 text-white text-center">
+            <v-icon color="white" class="mx-2">mdi-progress-check</v-icon>
+            Waitlist</div>
+          </v-col>
+          <v-col cols="4" class="progress">
+          <div class="font-weight-bold text-subtitle-1 text-white text-center">
+            <v-icon color="white" class="mx-2">mdi-progress-check</v-icon>
+            Progress</div>
+          </v-col>
+          <v-col cols="4" class="done">
+          <div class="font-weight-bold text-subtitle-1 text-white text-center">
+            <v-icon color="white" class="mx-2">mdi-progress-check</v-icon>
+            Done</div>
+          </v-col>
+      </v-row>
+      <v-row>
+      
         
-        <v-col cols="4" class="glass-whaitlist">
-          <v-icon color="primary">mdi-progress-alert</v-icon>
-          <v-col-title class="font-weight-bold mx-2">Waitlist</v-col-title>
+        <v-col cols="4" class="glass">
         <v-col v-for="(task, index) in taskList" :key="index">
             <div v-if="task.status === 'to do'" >
                 <v-card class="rounded-shaped" :style="{ backgroundColor: task.color }">
@@ -82,7 +103,7 @@ backdrop-filter: blur(5.2px);
 
                   <template v-if="task.editable">
                     <v-radio-group v-model="task.status">
-                      <v-radio label="To Do" value="to do"></v-radio>
+                      <v-radio label="waitlist" value="to do"></v-radio>
                       <v-radio label="Progress" value="progress"></v-radio>
                       <v-radio label="Done" value="done"></v-radio>
                     </v-radio-group>
@@ -122,15 +143,15 @@ backdrop-filter: blur(5.2px);
           </v-col>
         </v-col>
 
-        <v-col cols="4" class="glass-progress">
-          <v-icon color="primary">mdi-progress-clock</v-icon>
-          <v-col-title class="font-weight-bold mx-2">Progress</v-col-title>
+
+        
+        <v-col cols="4" class="glass">
           <v-col v-for="(task, index) in taskList" :key="index">
             <div v-if="task.status === 'progress'" >
                 <v-card class="rounded-shaped" :style="{ backgroundColor: task.color }">
                 <v-card-title>
                   <!-- Task date and time -->
-                  <v-list-item v-if="task.date && task.time" class="text-subtitle-1">{{ task.date }} {{ task.time }}</v-list-item>
+                  <v-list-item v-if="task.date && task.time" class="text-subtitle-1"><v-icon color="primary mx-2">mdi-clock-time-eight-outline</v-icon>{{ task.date }} {{ task.time }}</v-list-item>
                   <!-- Task date and time -->
                   <v-divider :thickness="2"></v-divider>
                   <br>
@@ -186,15 +207,13 @@ backdrop-filter: blur(5.2px);
           </v-col>
         </v-col>
 
-        <v-col cols="4" class="glass-done">
-          <v-icon color="primary">mdi-progress-check</v-icon>
-          <v-col-title class="font-weight-bold mx-2">Done</v-col-title>
+        <v-col cols="4" class="glass">
           <v-col v-for="(task, index) in taskList" :key="index">
             <div v-if="task.status === 'done'" >
                 <v-card class="rounded-shaped" :style="{ backgroundColor: task.color }">
                 <v-card-title>
                   <!-- Task date and time -->
-                  <v-list-item v-if="task.date && task.time" class="text-subtitle-1">{{ task.date }} {{ task.time }}</v-list-item>
+                  <v-list-item v-if="task.date && task.time" class="text-subtitle-1"><v-icon color="primary mx-2">mdi-clock-time-eight-outline</v-icon>{{ task.date }} {{ task.time }}</v-list-item>
                   <!-- Task date and time -->
                   <v-divider :thickness="2"></v-divider>
                   <br>
@@ -262,7 +281,7 @@ export default {
       newTask: '',
       newTaskDescription: '',
       tasks: [],
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
