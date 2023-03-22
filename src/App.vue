@@ -33,6 +33,10 @@
             <div v-if="task.status === 'to do'" >
                 <v-card class="rounded-shaped" :style="{ backgroundColor: task.color }">
                 <v-card-title>
+                  <!-- Task date and time -->
+                  <v-list-item v-if="task.date && task.time" class="text-subtitle-1">{{ task.date }} {{ task.time }}</v-list-item>
+                  <!-- Task date and time -->
+                  
                   <!-- Task title -->
                   <v-list-item v-if="!task.editable">{{ task.title }}</v-list-item>
                   <v-text-field v-model="task.title" v-else label="Task Name"></v-text-field>
@@ -92,6 +96,10 @@
             <div v-if="task.status === 'progress'" >
                 <v-card class="rounded-shaped" :style="{ backgroundColor: task.color }">
                 <v-card-title>
+                  <!-- Task date and time -->
+                  <v-list-item v-if="task.date && task.time" class="text-subtitle-1">{{ task.date }} {{ task.time }}</v-list-item>
+                  <!-- Task date and time -->
+
                   <!-- Task title -->
                   <v-list-item v-if="!task.editable">{{ task.title }}</v-list-item>
                   <v-text-field v-model="task.title" v-else label="Task Name"></v-text-field>
@@ -151,6 +159,10 @@
             <div v-if="task.status === 'done'" >
                 <v-card class="rounded-shaped" :style="{ backgroundColor: task.color }">
                 <v-card-title>
+                  <!-- Task date and time -->
+                  <v-list-item v-if="task.date && task.time" class="text-subtitle-1">{{ task.date }} {{ task.time }}</v-list-item>
+                  <!-- Task date and time -->
+                  
                   <!-- Task title -->
                   <v-list-item v-if="!task.editable">{{ task.title }}</v-list-item>
                   <v-text-field v-model="task.title" v-else label="Task Name"></v-text-field>
@@ -238,12 +250,16 @@ export default {
     // If task is empty, return alert with message "Please write a task"
     addTask() {
       if (this.newTask != "") {
+        const currentDate = new Date(); //Retrieves the current date and time
+        console.log(currentDate);
         this.taskList.push({ title: this.newTask,
                               description: this.newTaskDescription,
                               done: false,
                               color: "#ffffff",
                               colorPickerDialog: false,
-                              status: "to do" // status propriety 
+                              status: "to do", // status propriety 
+                              date: `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`, // get dateformat dd-m-yy
+                              time: `${currentDate.getHours()}:${currentDate.getMinutes()}` // get time format o:m
                             });
         this.newTask = '';
         this.newTaskDescription = '';
