@@ -1,5 +1,37 @@
+<style scoped>
+#app{
+  background-image: url('./assets/body.png') !important;
+  background-repeat: no-repeat !important;
+  background-size:cover;
+}
+
+.glass-whaitlist{
+/* From https://css.glass */
+background: rgba(183, 102, 185, 0.363);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5.2px);
+-webkit-backdrop-filter: blur(5.2px);
+}
+
+.glass-progress{
+/* From https://css.glass */
+background: rgba(235, 114, 16, 0.342);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5.2px);
+-webkit-backdrop-filter: blur(5.2px);
+}
+
+.glass-done{
+/* From https://css.glass */
+background: rgba(14, 233, 33, 0.356);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5.2px);
+-webkit-backdrop-filter: blur(5.2px);
+}
+</style>
+
 <template>
-  <v-app>
+  <v-app id="app">
     <v-app-bar app color="primary" dark>
       <v-toolbar-title>
         My Todo List
@@ -9,7 +41,7 @@
     </v-app-bar>
 
     <v-container class="my-15">
-      <v-card>
+      <v-card class="glass">
         <v-card-title>
           Add Task
         </v-card-title>
@@ -26,7 +58,7 @@
 
       <v-row>
         
-        <v-col cols="4" class="bg-purple-lighten-4">
+        <v-col cols="4" class="glass-whaitlist">
           <v-icon color="primary">mdi-progress-alert</v-icon>
           <v-col-title class="font-weight-bold mx-2">Waitlist</v-col-title>
         <v-col v-for="(task, index) in taskList" :key="index">
@@ -34,9 +66,10 @@
                 <v-card class="rounded-shaped" :style="{ backgroundColor: task.color }">
                 <v-card-title>
                   <!-- Task date and time -->
-                  <v-list-item v-if="task.date && task.time" class="text-subtitle-1">{{ task.date }} {{ task.time }}</v-list-item>
+                  <v-list-item v-if="task.date && task.time" class="text-subtitle-1"><v-icon color="primary mx-2">mdi-clock-time-eight-outline</v-icon>{{ task.date }} {{ task.time }}</v-list-item>
                   <!-- Task date and time -->
-                  
+                  <v-divider :thickness="2"></v-divider>
+                  <br>
                   <!-- Task title -->
                   <v-list-item v-if="!task.editable">{{ task.title }}</v-list-item>
                   <v-text-field v-model="task.title" v-else label="Task Name"></v-text-field>
@@ -89,7 +122,7 @@
           </v-col>
         </v-col>
 
-        <v-col cols="4" class="bg-orange-lighten-4">
+        <v-col cols="4" class="glass-progress">
           <v-icon color="primary">mdi-progress-clock</v-icon>
           <v-col-title class="font-weight-bold mx-2">Progress</v-col-title>
           <v-col v-for="(task, index) in taskList" :key="index">
@@ -99,7 +132,8 @@
                   <!-- Task date and time -->
                   <v-list-item v-if="task.date && task.time" class="text-subtitle-1">{{ task.date }} {{ task.time }}</v-list-item>
                   <!-- Task date and time -->
-
+                  <v-divider :thickness="2"></v-divider>
+                  <br>
                   <!-- Task title -->
                   <v-list-item v-if="!task.editable">{{ task.title }}</v-list-item>
                   <v-text-field v-model="task.title" v-else label="Task Name"></v-text-field>
@@ -152,7 +186,7 @@
           </v-col>
         </v-col>
 
-        <v-col cols="4" class="bg-green-lighten-4">
+        <v-col cols="4" class="glass-done">
           <v-icon color="primary">mdi-progress-check</v-icon>
           <v-col-title class="font-weight-bold mx-2">Done</v-col-title>
           <v-col v-for="(task, index) in taskList" :key="index">
@@ -162,7 +196,8 @@
                   <!-- Task date and time -->
                   <v-list-item v-if="task.date && task.time" class="text-subtitle-1">{{ task.date }} {{ task.time }}</v-list-item>
                   <!-- Task date and time -->
-                  
+                  <v-divider :thickness="2"></v-divider>
+                  <br>
                   <!-- Task title -->
                   <v-list-item v-if="!task.editable">{{ task.title }}</v-list-item>
                   <v-text-field v-model="task.title" v-else label="Task Name"></v-text-field>
@@ -258,7 +293,7 @@ export default {
                               color: "#ffffff",
                               colorPickerDialog: false,
                               status: "to do", // status propriety 
-                              date: `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`, // get dateformat dd-m-yy
+                              date: `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`, // get dateformat dd-m-yy
                               time: `${currentDate.getHours()}:${currentDate.getMinutes()}` // get time format o:m
                             });
         this.newTask = '';
