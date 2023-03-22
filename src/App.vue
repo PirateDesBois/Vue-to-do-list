@@ -3,7 +3,9 @@
     <v-app-bar app color="primary" dark>
       <v-toolbar-title>
         My Todo List
+        
       </v-toolbar-title>
+      <v-btn color="orange"  @click="clearHistory()">Clear</v-btn>
     </v-app-bar>
 
     <v-container class="my-15">
@@ -25,10 +27,11 @@
       <v-row>
         
         <v-col cols="4" class="bg-purple-lighten-4">
-          <v-col-title>To do</v-col-title>
+          <v-icon color="primary">mdi-progress-alert</v-icon>
+          <v-col-title class="font-weight-bold mx-2">Waitlist</v-col-title>
         <v-col v-for="(task, index) in taskList" :key="index">
             <div v-if="task.status === 'to do'" >
-                <v-card class="ma-2 rounded-shaped" :style="{ backgroundColor: task.color }">
+                <v-card class="rounded-shaped" :style="{ backgroundColor: task.color }">
                 <v-card-title>
                   <!-- Task title -->
                   <v-list-item v-if="!task.editable">{{ task.title }}</v-list-item>
@@ -40,12 +43,14 @@
                   <v-text-field v-model="task.description" v-else label="Task Description"></v-text-field>
                   <!-- Task description -->
 
-                  <v-radio-group v-model="task.status">
-                    <v-radio label="To Do" value="to do"></v-radio>
-                    <v-radio label="Progress" value="progress"></v-radio>
-                    <v-radio label="Done" value="done"></v-radio>
-                  </v-radio-group>
-
+                  <template v-if="task.editable">
+                    <v-radio-group v-model="task.status">
+                      <v-radio label="To Do" value="to do"></v-radio>
+                      <v-radio label="Progress" value="progress"></v-radio>
+                      <v-radio label="Done" value="done"></v-radio>
+                    </v-radio-group>
+                  </template>
+                  
                 </v-card-title>
 
                 <v-card-actions class="justify-end text-right">
@@ -81,10 +86,11 @@
         </v-col>
 
         <v-col cols="4" class="bg-orange-lighten-4">
-          <v-col-title>progress</v-col-title>
+          <v-icon color="primary">mdi-progress-clock</v-icon>
+          <v-col-title class="font-weight-bold mx-2">Progress</v-col-title>
           <v-col v-for="(task, index) in taskList" :key="index">
             <div v-if="task.status === 'progress'" >
-                <v-card class="ma-2 rounded-shaped" :style="{ backgroundColor: task.color }">
+                <v-card class="rounded-shaped" :style="{ backgroundColor: task.color }">
                 <v-card-title>
                   <!-- Task title -->
                   <v-list-item v-if="!task.editable">{{ task.title }}</v-list-item>
@@ -96,11 +102,13 @@
                   <v-text-field v-model="task.description" v-else label="Task Description"></v-text-field>
                   <!-- Task description -->
 
-                  <v-radio-group v-model="task.status">
-                    <v-radio label="To Do" value="to do"></v-radio>
-                    <v-radio label="Progress" value="progress"></v-radio>
-                    <v-radio label="Done" value="done"></v-radio>
-                  </v-radio-group>
+                  <template v-if="task.editable">
+                    <v-radio-group v-model="task.status">
+                      <v-radio label="To Do" value="to do"></v-radio>
+                      <v-radio label="Progress" value="progress"></v-radio>
+                      <v-radio label="Done" value="done"></v-radio>
+                    </v-radio-group>
+                  </template>
 
                 </v-card-title>
 
@@ -137,10 +145,11 @@
         </v-col>
 
         <v-col cols="4" class="bg-green-lighten-4">
-          <v-col-title>Done</v-col-title>
+          <v-icon color="primary">mdi-progress-check</v-icon>
+          <v-col-title class="font-weight-bold mx-2">Done</v-col-title>
           <v-col v-for="(task, index) in taskList" :key="index">
             <div v-if="task.status === 'done'" >
-                <v-card class="ma-2 rounded-shaped" :style="{ backgroundColor: task.color }">
+                <v-card class="rounded-shaped" :style="{ backgroundColor: task.color }">
                 <v-card-title>
                   <!-- Task title -->
                   <v-list-item v-if="!task.editable">{{ task.title }}</v-list-item>
@@ -152,11 +161,13 @@
                   <v-text-field v-model="task.description" v-else label="Task Description"></v-text-field>
                   <!-- Task description -->
 
-                  <v-radio-group v-model="task.status">
-                    <v-radio label="To Do" value="to do"></v-radio>
-                    <v-radio label="Progress" value="progress"></v-radio>
-                    <v-radio label="Done" value="done"></v-radio>
-                  </v-radio-group>
+                  <template v-if="task.editable">
+                    <v-radio-group v-model="task.status">
+                      <v-radio label="To Do" value="to do"></v-radio>
+                      <v-radio label="Progress" value="progress"></v-radio>
+                      <v-radio label="Done" value="done"></v-radio>
+                    </v-radio-group>
+                  </template>
 
                 </v-card-title>
 
@@ -192,7 +203,6 @@
           </v-col>
         </v-col>
       </v-row>
-      <v-btn color="primary" block @click="clearHistory()">Clear</v-btn>
     </v-container>
   </v-app>
 </template>
@@ -212,6 +222,8 @@ export default {
     clearHistory() {
       // Réinitialiser le LocalStorage
     localStorage.clear();
+    // Refresh page
+    location.reload();
     },
     // Initialisation of data
     getData() {
